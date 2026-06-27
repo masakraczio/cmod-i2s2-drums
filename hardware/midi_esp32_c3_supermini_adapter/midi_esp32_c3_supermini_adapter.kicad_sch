@@ -1,0 +1,75 @@
+(kicad_sch
+	(version 20250114)
+	(generator "codex")
+	(generator_version "1.0")
+	(uuid "8cf0a55e-54d0-45d9-a4f5-4d28c35c3224")
+	(paper "A4")
+	(title_block
+		(title "MIDI DIN to Cmod A7 Adapter")
+		(date "2026-06-27")
+		(rev "A")
+		(company "CMOD A7 Drum Computer")
+		(comment 1 "ESP32-C3 SuperMini MIDI bridge")
+	)
+	(text "Rev A wiring schematic / notes\n\nMIDI DIN IN -> 6N138 optocoupler -> ESP32-C3 SuperMini GPIO20 (UART RX, 31250 baud)\nESP32-C3 SuperMini GPIO21 (UART TX, 115200 baud) -> Cmod A7 uart_rx\n\nThis sheet is a KiCad starter schematic. Before PCB production, replace the notes with exact symbols/footprints for the DIN connector and your exact ESP32-C3 SuperMini clone."
+		(exclude_from_sim no)
+		(at 20 20 0)
+		(effects
+			(font
+				(size 2 2)
+			)
+			(justify left top)
+		)
+		(uuid "d6602bc3-ef2a-4e62-a94b-f3e6e48f7fa1")
+	)
+	(text "MIDI input side\n\nJ1 DIN-5:\nPin 4 -> R1 220R -> 6N138 LED anode\nPin 5 -> 6N138 LED cathode return\nPin 2 -> cable shield/chassis only\nPins 1,3 -> NC\n\nKeep the MIDI DIN side isolated from ESP32/Cmod signal ground."
+		(exclude_from_sim no)
+		(at 20 65 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left top)
+		)
+		(uuid "50d3c835-d569-4c5c-bce5-4eb2f9803f24")
+	)
+	(text "Logic side\n\nU2 6N138 powered from ESP32 3V3\nC1 100nF near U2\nR2 2.2k..4.7k pull-up from opto output to 3V3\nOpto output -> ESP32-C3 GPIO20\n\nOptional LED activity indicator can be driven from ESP32 firmware after the first bring-up."
+		(exclude_from_sim no)
+		(at 92 65 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left top)
+		)
+		(uuid "90e70576-29d5-44a9-afbc-098ab7e48326")
+	)
+	(text "Cmod A7 header\n\nESP32 GPIO21 / UART TX -> Cmod uart_rx\nESP32 GND -> Cmod GND\n3V3 only if intentionally sharing power\nOptional ESP32 GPIO20/other RX <- future Cmod TX\n\nFor first power-up, power ESP32-C3 from USB and share only GND + TX signal with Cmod."
+		(exclude_from_sim no)
+		(at 20 130 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left top)
+		)
+		(uuid "4ba43144-5a06-48d1-9b45-2c0b96312171")
+	)
+	(text "Default MIDI note map in firmware\n\n36 kick -> '1'\n38 snare -> '2'\n42 closed hihat -> '3'\n46 open hihat -> '4'\n39 clap -> '5'\n45 low tom -> '6'\n50 high tom -> '7'\n49 crash -> '8'\n\nChromatic fallback: notes 36..43 -> pads 1..8."
+		(exclude_from_sim no)
+		(at 92 130 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left top)
+		)
+		(uuid "4da10d92-e240-4574-a815-66842c3bb142")
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)

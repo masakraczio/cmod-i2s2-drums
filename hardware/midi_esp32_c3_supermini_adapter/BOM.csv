@@ -1,0 +1,12 @@
+Reference,Value,Footprint/Package,Notes
+J1,5-pin DIN MIDI IN,DIN-5 PCB connector,Choose exact footprint after selecting connector part
+U1,ESP32-C3 SuperMini,2x8 2.54 mm module headers,Verify clone pinout before PCB order
+U2,6N138,DIP-8 or SOIC-8,Fast optocoupler for MIDI input
+D1,1N4148,THT/SMD diode,Reverse protection across optocoupler LED path
+R1,220 ohm,THT/SMD resistor,MIDI input current limit
+R2,2.2k ohm,THT/SMD resistor,6N138 output pull-up to 3V3
+R3,10k ohm,THT/SMD resistor,6N138 enable/base bias option
+R4,330 ohm,THT/SMD resistor,Optional MIDI activity LED
+LED1,LED,THT/SMD LED,Optional MIDI activity indicator
+C1,100 nF,THT/SMD capacitor,6N138 decoupling
+J2,1x4 Cmod UART header,2.54 mm header,GND / 3V3 optional / ESP32_TX / ESP32_RX optional

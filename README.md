@@ -9,6 +9,7 @@ FPGA drum computer prototype for the Digilent Cmod A7-35T with Pmod I2S2 stereo 
 - `src/rtl/generated/` - generated drum sample ROM data used by the current RTL.
 - `drum_pad.ps1` and `drum_sequencer_ui.ps1` - Windows helper UI scripts.
 - `webui/` - browser UI served by a local PowerShell HTTP-to-serial bridge.
+- `hardware/` - companion hardware projects, including the ESP32-C3 SuperMini MIDI DIN bridge adapter.
 - `artifacts/` - curated bitstream and implementation reports from the latest available build.
 
 ## Target
@@ -55,3 +56,7 @@ Click `Enable MIDI`, allow MIDI access in the browser, then choose the MiniLab i
 - C#2 / 49 - crash
 
 The UI also accepts notes 36-43 as eight chromatic pads, and the `Learn` control can remap any pad to the next incoming MIDI note.
+
+## MIDI DIN Adapter
+
+The `hardware/midi_esp32_c3_supermini_adapter/` KiCad project sketches a DIN MIDI input adapter using an ESP32-C3 SuperMini as a bridge. It translates MIDI Note On messages to the same UART drum keys used by the Web UI.
