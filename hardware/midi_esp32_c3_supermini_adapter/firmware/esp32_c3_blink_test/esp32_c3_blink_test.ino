@@ -13,17 +13,21 @@ void setup() {
   pinMode(LED_PIN, OUTPUT);
   Serial.begin(115200);
   delay(500);
-  Serial.println("ESP32-C3 SuperMini blink test");
+  Serial.println("ESP32-C3 SuperMini accelerating/decelerating blink test");
   Serial.print("LED pin: ");
   Serial.println(LED_PIN);
 }
 
 void loop() {
-  digitalWrite(LED_PIN, HIGH);
-  Serial.println("LED HIGH");
-  delay(500);
+  static constexpr int delaysMs[] = { 35, 45, 60, 80, 110, 150, 210, 300, 430, 600 };
 
-  digitalWrite(LED_PIN, LOW);
-  Serial.println("LED LOW");
-  delay(500);
+  Serial.println("Pattern start: fast -> slow");
+  for (int i = 0; i < int(sizeof(delaysMs) / sizeof(delaysMs[0])); i++) {
+    digitalWrite(LED_PIN, HIGH);
+    delay(delaysMs[i]);
+    digitalWrite(LED_PIN, LOW);
+    delay(delaysMs[i]);
+  }
+
+  delay(350);
 }
