@@ -20,6 +20,7 @@ The ESP32-C3 runs the firmware in `firmware/esp32_c3_midi_bridge/` and sends ASC
 - `PIN_CONNECTIONS.txt` - exact pin-to-pin wiring list for breadboard and schematic cleanup.
 - `BOM.csv` - first-pass bill of materials.
 - `firmware/esp32_c3_midi_bridge/esp32_c3_midi_bridge.ino` - Arduino sketch for ESP32-C3.
+- `firmware/esp32_c3_blink_test/esp32_c3_blink_test.ino` - standalone GPIO8 LED blink test.
 
 ## Important
 

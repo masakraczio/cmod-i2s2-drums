@@ -34,3 +34,6 @@ temp/
 .history/
 *.kicad_*.lck
 ~*.lck
+
+# Arduino/ESP32 local build output
+hardware/**/firmware/**/build/
