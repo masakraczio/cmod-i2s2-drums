@@ -29,3 +29,8 @@ dfx_runtime.txt
 .psram_smoke_check/
 tmp/
 temp/
+
+# KiCad local editor state
+.history/
+*.kicad_*.lck
+~*.lck

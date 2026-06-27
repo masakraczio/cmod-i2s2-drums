@@ -1,5 +1,9 @@
 # Connections
 
+For a strict pin-by-pin wiring list, see `PIN_CONNECTIONS.txt`.
+
+Short answer for the confusing part: `C1` goes between the ESP32-C3 SuperMini `3V3` pin and the shared logic ground. That shared logic ground is ESP32 `GND` plus Cmod `GND` plus 6N138 pin 5. It is not MIDI DIN pin 2.
+
 ## MIDI DIN Input
 
 Use an opto-isolated MIDI input. Do not wire the DIN connector directly into the ESP32-C3.
@@ -21,7 +25,7 @@ Suggested opto side:
 - 6N138 logic side powered from ESP32-C3 `3V3`.
 - 6N138 output -> ESP32-C3 `GPIO20` through `MIDI_RX`.
 - Pull up 6N138 output to `3V3`, start with 2.2k to 4.7k.
-- Add 100 nF decoupling near the 6N138.
+- Add 100 nF decoupling near the 6N138: one side to ESP32-C3 `3V3`, the other side to shared logic `GND`.
 
 ## ESP32-C3 SuperMini
 
