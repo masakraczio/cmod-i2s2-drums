@@ -14,7 +14,7 @@ The ESP32-C3 runs the firmware in `firmware/esp32_c3_midi_bridge/` and sends ASC
 ## Files
 
 - `midi_esp32_c3_supermini_adapter.kicad_pro` - KiCad 10 project.
-- `midi_esp32_c3_supermini_adapter.kicad_sch` - readable Rev A wiring schematic/notes sheet.
+- `midi_esp32_c3_supermini_adapter.kicad_sch` - readable Rev A schematic with symbols and wiring.
 - `midi_esp32_c3_supermini_adapter.kicad_pcb` - board outline placeholder for the adapter.
 - `CONNECTIONS.md` - wiring, pin choices, and bring-up checks.
 - `BOM.csv` - first-pass bill of materials.

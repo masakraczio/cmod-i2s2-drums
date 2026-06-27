@@ -11,60 +11,1442 @@
 		(company "CMOD A7 Drum Computer")
 		(comment 1 "ESP32-C3 SuperMini MIDI bridge")
 	)
-	(text "Rev A wiring schematic / notes\n\nMIDI DIN IN -> 6N138 optocoupler -> ESP32-C3 SuperMini GPIO20 (UART RX, 31250 baud)\nESP32-C3 SuperMini GPIO21 (UART TX, 115200 baud) -> Cmod A7 uart_rx\n\nThis sheet is a KiCad starter schematic. Before PCB production, replace the notes with exact symbols/footprints for the DIN connector and your exact ESP32-C3 SuperMini clone."
-		(exclude_from_sim no)
-		(at 20 20 0)
-		(effects
-			(font
-				(size 2 2)
+	(lib_symbols
+		(symbol "Adapter:6N138_MIDI"
+			(pin_names
+				(offset 1.016)
 			)
-			(justify left top)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at 0 -17.78 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "6N138"
+				(at 0 17.78 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "Package_DIP:DIP-8_W7.62mm"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+				(hide yes)
+			)
+			(symbol "6N138_MIDI_1_1"
+				(rectangle
+					(start -10.16 -15.24)
+					(end 10.16 15.24)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(text "6N138"
+					(at 0 0 0)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(pin input line
+					(at -12.7 -5.08 0)
+					(length 2.54)
+					(name "LED_A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -12.7 0 0)
+					(length 2.54)
+					(name "LED_K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 12.7 -10.16 180)
+					(length 2.54)
+					(name "VCC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 12.7 0 180)
+					(length 2.54)
+					(name "OUT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 12.7 5.08 180)
+					(length 2.54)
+					(name "EN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 12.7 10.16 180)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
 		)
-		(uuid "d6602bc3-ef2a-4e62-a94b-f3e6e48f7fa1")
+		(symbol "Adapter:CMOD_UART"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 0 -12.7 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Cmod_UART"
+				(at 0 12.7 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+				(hide yes)
+			)
+			(symbol "CMOD_UART_1_1"
+				(rectangle
+					(start -7.62 -10.16)
+					(end 7.62 10.16)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(pin input line
+					(at -10.16 0 0)
+					(length 2.54)
+					(name "uart_rx"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -10.16 5.08 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -10.16 -5.08 0)
+					(length 2.54)
+					(name "3V3_OPT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at -10.16 10.16 0)
+					(length 2.54)
+					(name "uart_tx_opt"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Adapter:DIN5_MIDI_IN"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 0 -15.24 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "DIN5_MIDI_IN"
+				(at 0 15.24 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "Connector_DIN:DIN-5"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+				(hide yes)
+			)
+			(symbol "DIN5_MIDI_IN_1_1"
+				(rectangle
+					(start -5.08 -12.7)
+					(end 5.08 12.7)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(text "DIN-5\nMIDI IN"
+					(at 0 0 0)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(pin passive line
+					(at 7.62 -5.08 180)
+					(length 2.54)
+					(name "DIN4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 7.62 0 180)
+					(length 2.54)
+					(name "DIN5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 7.62 5.08 180)
+					(length 2.54)
+					(name "SHIELD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Adapter:DIODE"
+			(pin_names
+				(offset 0.5)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "D"
+				(at 0 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "1N4148"
+				(at 0 3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "DIODE_1_1"
+				(polyline
+					(pts
+						(xy -1.27 -2.54)
+						(xy -1.27 2.54)
+						(xy 2.54 0)
+						(xy -1.27 -2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 -2.54)
+						(xy 2.54 2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 0 180)
+					(length 2.54)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Adapter:ESP32_C3_SUPERMINI"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at 0 -22.86 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "ESP32-C3 SuperMini"
+				(at 0 22.86 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_2x08_P2.54mm_Vertical"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+				(hide yes)
+			)
+			(symbol "ESP32_C3_SUPERMINI_1_1"
+				(rectangle
+					(start -12.7 -20.32)
+					(end 12.7 20.32)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(text "ESP32-C3\nSuperMini"
+					(at 0 0 0)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(pin power_out line
+					(at -15.24 -10.16 0)
+					(length 2.54)
+					(name "3V3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3V3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -15.24 -5.08 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -15.24 0 0)
+					(length 2.54)
+					(name "GPIO20_RX"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "20"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -15.24 5.08 0)
+					(length 2.54)
+					(name "5V_USB"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5V"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 15.24 0 180)
+					(length 2.54)
+					(name "GPIO21_TX"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "21"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 15.24 5.08 180)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "GND2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Adapter:R"
+			(pin_names
+				(offset 0.5)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "R"
+				(at 0 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "R"
+				(at 0 3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "R_1_1"
+				(rectangle
+					(start -2.54 -1.27)
+					(end 2.54 1.27)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 0 180)
+					(length 2.54)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Adapter:CAP"
+			(pin_names
+				(offset 0.5)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "C"
+				(at 0 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "100n"
+				(at 0 3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "CAP_1_1"
+				(polyline
+					(pts
+						(xy -1.27 -2.54)
+						(xy -1.27 2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 -2.54)
+						(xy 1.27 2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 0 180)
+					(length 3.81)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 	)
-	(text "MIDI input side\n\nJ1 DIN-5:\nPin 4 -> R1 220R -> 6N138 LED anode\nPin 5 -> 6N138 LED cathode return\nPin 2 -> cable shield/chassis only\nPins 1,3 -> NC\n\nKeep the MIDI DIN side isolated from ESP32/Cmod signal ground."
-		(exclude_from_sim no)
-		(at 20 65 0)
-		(effects
-			(font
-				(size 1.6 1.6)
-			)
-			(justify left top)
+	(wire
+		(pts
+			(xy 55.88 86.36)
+			(xy 88.9 86.36)
 		)
-		(uuid "50d3c835-d569-4c5c-bce5-4eb2f9803f24")
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ab21b8b7-05c9-42b3-a686-79738869c28a")
 	)
-	(text "Logic side\n\nU2 6N138 powered from ESP32 3V3\nC1 100nF near U2\nR2 2.2k..4.7k pull-up from opto output to 3V3\nOpto output -> ESP32-C3 GPIO20\n\nOptional LED activity indicator can be driven from ESP32 firmware after the first bring-up."
-		(exclude_from_sim no)
-		(at 92 65 0)
-		(effects
-			(font
-				(size 1.6 1.6)
-			)
-			(justify left top)
+	(wire
+		(pts
+			(xy 33.02 81.28)
+			(xy 88.9 81.28)
 		)
-		(uuid "90e70576-29d5-44a9-afbc-098ab7e48326")
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "648c0b9c-f1d7-4351-bff3-353bf505d21e")
 	)
-	(text "Cmod A7 header\n\nESP32 GPIO21 / UART TX -> Cmod uart_rx\nESP32 GND -> Cmod GND\n3V3 only if intentionally sharing power\nOptional ESP32 GPIO20/other RX <- future Cmod TX\n\nFor first power-up, power ESP32-C3 from USB and share only GND + TX signal with Cmod."
-		(exclude_from_sim no)
-		(at 20 130 0)
-		(effects
-			(font
-				(size 1.6 1.6)
-			)
-			(justify left top)
+	(wire
+		(pts
+			(xy 114.3 81.28)
+			(xy 137.16 81.28)
 		)
-		(uuid "4ba43144-5a06-48d1-9b45-2c0b96312171")
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ca662f63-c6ab-4196-b333-bb2f36c5c465")
 	)
-	(text "Default MIDI note map in firmware\n\n36 kick -> '1'\n38 snare -> '2'\n42 closed hihat -> '3'\n46 open hihat -> '4'\n39 clap -> '5'\n45 low tom -> '6'\n50 high tom -> '7'\n49 crash -> '8'\n\nChromatic fallback: notes 36..43 -> pads 1..8."
-		(exclude_from_sim no)
-		(at 92 130 0)
+	(wire
+		(pts
+			(xy 167.64 81.28)
+			(xy 182.88 81.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5c452533-0c41-4845-afc9-4f0a9ae42a83")
+	)
+	(wire
+		(pts
+			(xy 167.64 76.2)
+			(xy 182.88 76.2)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f4d6ff55-9179-4ff1-b893-3a5f7945ed7a")
+	)
+	(label "MIDI_A"
+		(at 66.04 99.06 0)
 		(effects
 			(font
-				(size 1.6 1.6)
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d0e9ac41-edb3-4de9-9883-87954b873872")
+	)
+	(label "MIDI_K"
+		(at 55.88 99.06 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "a8033690-5f9c-4a01-9975-88e6f4b66eea")
+	)
+	(label "3V3"
+		(at 114.3 91.44 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5f6c7b65-3aa3-4ff9-9d43-8fac2a54e05d")
+	)
+	(label "GND"
+		(at 114.3 71.12 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "f73d60ef-659d-4076-b33b-0ac1f678e295")
+	)
+	(label "3V3"
+		(at 121.92 71.12 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "4d80cf09-e68e-4574-b9f4-45871d25bf00")
+	)
+	(label "MIDI_RX"
+		(at 132.08 71.12 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b95b3d19-9288-4c31-a5db-3274e6f23060")
+	)
+	(label "MIDI_RX"
+		(at 121.92 81.28 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "f6944581-3652-40de-910e-47e20f97ba2b")
+	)
+	(label "GND"
+		(at 132.08 76.2 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2dc129e3-bdf9-43fd-b440-178a86ad2f0d")
+	)
+	(label "3V3"
+		(at 127 104.14 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "1c10a1d9-826b-4664-a645-c6d8e79f21ab")
+	)
+	(label "GND"
+		(at 137.16 104.14 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "167f42c0-4feb-4fea-9c4a-c0cb1ccfb55c")
+	)
+	(label "3V3"
+		(at 137.16 91.44 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "04a646f9-2820-4741-84ad-03fa00697890")
+	)
+	(label "GND"
+		(at 137.16 86.36 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "530346a1-0ffc-4492-9c9e-0d2c34155c1d")
+	)
+	(label "MIDI_RX"
+		(at 137.16 81.28 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "d8366fc9-9d28-4df2-a5d7-8e9e8c4fc786")
+	)
+	(label "Cmod uart_rx"
+		(at 174 81.28 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "50828567-938b-48de-bd57-20ce8547344b")
+	)
+	(label "GND"
+		(at 174 76.2 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b8be3043-6839-47cf-a2ba-8deeb3ced853")
+	)
+	(text "MIDI DIN input is isolated. DIN pin 2 is shield/chassis only; do not join it to ESP32/Cmod logic GND on this input side."
+		(exclude_from_sim no)
+		(at 20 48 0)
+		(effects
+			(font
+				(size 1.27 1.27)
 			)
 			(justify left top)
 		)
-		(uuid "4da10d92-e240-4574-a815-66842c3bb142")
+		(uuid "6b8b468f-0d0e-4d4f-8363-136739a7efab")
+	)
+	(text "Verify ESP32-C3 SuperMini clone pinout before routing/order. Firmware default: GPIO20 = MIDI RX 31250, GPIO21 = Cmod TX 115200."
+		(exclude_from_sim no)
+		(at 118 48 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "691619d8-8c41-46ab-ba28-2f415aa28269")
+	)
+	(no_connect
+		(at 33.02 76.2)
+		(uuid "8945a465-0b88-4d99-b829-90e37a481c18")
+	)
+	(no_connect
+		(at 137.16 76.2)
+		(uuid "20de1364-6017-45c6-b837-a31aec96ebff")
+	)
+	(no_connect
+		(at 182.88 71.12)
+		(uuid "038ce634-04a5-4d48-9899-c667d2336f8f")
+	)
+	(no_connect
+		(at 182.88 86.36)
+		(uuid "87f36972-43ed-49f8-b6b7-f10729338c7f")
+	)
+	(label "MIDI_A"
+		(at 70 86.36 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "3966f616-d8b2-4542-930b-e6b33731283f")
+	)
+	(label "MIDI_K"
+		(at 60 81.28 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "ef8dd831-13af-4580-ac60-a2ab67b907fc")
+	)
+	(label "MIDI_DIN4"
+		(at 33.02 86.36 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "7a3fb7d7-76db-40fd-a790-1a5920b50a63")
+	)
+	(label "MIDI_DIN4"
+		(at 45.72 86.36 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "1dfc012a-b846-466a-91f6-71a34ee2306f")
+	)
+	(label "OPTO_EN"
+		(at 114.3 76.2 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "8c04b519-e8c6-449d-899b-153b2f38fa84")
+	)
+	(label "OPTO_EN"
+		(at 121.92 76.2 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "3fd801f5-5870-4939-9018-9704a9db759f")
+	)
+	(symbol
+		(lib_id "Adapter:DIN5_MIDI_IN")
+		(at 25.4 81.28 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "6e08ad0e-0f94-48d8-8253-4c4d7e141f8a")
+		(property "Reference" "J1"
+			(at 25.4 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "MIDI IN"
+			(at 25.4 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "4"
+			(uuid "9c93ab57-0ed4-4561-9da2-7b69e57e4597")
+		)
+		(pin "5"
+			(uuid "730fc32a-8f22-4cd7-98df-74664d4ec047")
+		)
+		(pin "2"
+			(uuid "30595927-7652-445f-8f50-c780e96e394d")
+		)
+	)
+	(symbol
+		(lib_id "Adapter:R")
+		(at 50.8 86.36 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a25e5cb-87db-4713-81b0-a3b40af64c4d")
+		(property "Reference" "R1"
+			(at 50.8 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "220R"
+			(at 50.8 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "1567e3f2-9f50-4942-86f4-dcdf5c33229c")
+		)
+		(pin "2"
+			(uuid "39b2e9bc-7e1b-42f8-9249-e4352dfb6cd0")
+		)
+	)
+	(symbol
+		(lib_id "Adapter:DIODE")
+		(at 60.96 99.06 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "1cd564df-ec44-4a8b-813e-e5e99a02c3a4")
+		(property "Reference" "D1"
+			(at 60.96 94.0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1N4148 reverse"
+			(at 60.96 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "908af082-d728-41d6-8416-894830612d07")
+		)
+		(pin "2"
+			(uuid "2ffef4f4-5188-4577-9fda-3615ee89bda8")
+		)
+	)
+	(symbol
+		(lib_id "Adapter:6N138_MIDI")
+		(at 101.6 81.28 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "0a65c18d-8e9d-4798-9278-87699f386299")
+		(property "Reference" "U2"
+			(at 101.6 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "6N138"
+			(at 101.6 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "320df0c6-a397-47d0-bd3a-f982df775de7")
+		)
+		(pin "3"
+			(uuid "61d9f371-67af-4618-a849-d1aa8be8bf85")
+		)
+		(pin "8"
+			(uuid "a2941cf5-1ee5-48c6-ae68-e4aa3cd6de62")
+		)
+		(pin "6"
+			(uuid "6450e320-b302-4824-b6da-94d7fe20aba5")
+		)
+		(pin "7"
+			(uuid "40c718fc-4a3f-4d96-82b2-ee8295122303")
+		)
+		(pin "5"
+			(uuid "6409ad85-a313-4278-9734-bd3946344d9f")
+		)
+	)
+	(symbol
+		(lib_id "Adapter:R")
+		(at 127 71.12 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "1256d04d-5510-495a-bde3-00389572ca43")
+		(property "Reference" "R2"
+			(at 127 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "2.2k..4.7k"
+			(at 127 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "c548da2e-6acb-4519-8b90-1e121d52d947")
+		)
+		(pin "2"
+			(uuid "384911d0-d7c1-4cf8-8cc3-af2c401c59e5")
+		)
+	)
+	(symbol
+		(lib_id "Adapter:R")
+		(at 127 76.2 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "76b43d68-2285-4cd5-98d3-1dab49be1f8e")
+		(property "Reference" "R3"
+			(at 127 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10k"
+			(at 127 80.01 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "b94d8124-d3bc-48f5-ac81-b06109805197")
+		)
+		(pin "2"
+			(uuid "4b76f2df-dd6e-4aa4-9723-fc2ca26796fb")
+		)
+	)
+	(symbol
+		(lib_id "Adapter:CAP")
+		(at 132.08 104.14 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "1b120d09-d2d1-4462-81dc-c83ce7429060")
+		(property "Reference" "C1"
+			(at 132.08 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100n"
+			(at 132.08 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "d33c31b7-fac9-45e9-b0ef-9d1f6f5090cf")
+		)
+		(pin "2"
+			(uuid "d8696087-831a-4df6-8482-7bdaf049744d")
+		)
+	)
+	(symbol
+		(lib_id "Adapter:ESP32_C3_SUPERMINI")
+		(at 152.4 81.28 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a412f409-82bd-4c12-87c3-c6e575b799cd")
+		(property "Reference" "U1"
+			(at 152.4 57.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "ESP32-C3 SuperMini"
+			(at 152.4 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "3V3"
+			(uuid "8ebc4a8e-245a-4558-a8f1-081d3898fcec")
+		)
+		(pin "GND"
+			(uuid "44fdb990-f37f-4da3-a3a2-c05738b44d38")
+		)
+		(pin "20"
+			(uuid "93813e60-179f-4adf-a47f-521a31667c05")
+		)
+		(pin "5V"
+			(uuid "9188e22e-56ac-4d5d-b122-0aaf1f03942d")
+		)
+		(pin "21"
+			(uuid "b4382f7b-8f1b-4ffd-9b04-78cc7c701a5")
+		)
+		(pin "GND2"
+			(uuid "0cffc88f-0c27-4674-a9df-fd39efce27de")
+		)
+	)
+	(symbol
+		(lib_id "Adapter:CMOD_UART")
+		(at 193.04 81.28 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "4b165181-ab0b-4c8a-87d5-15423248bf06")
+		(property "Reference" "J2"
+			(at 193.04 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "To Cmod A7 UART"
+			(at 193.04 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "90f51928-d126-4459-8d6f-98e14fdcfaf6")
+		)
+		(pin "2"
+			(uuid "652a28e1-4ca0-4fbd-8fa0-9eb34d7959b0")
+		)
+		(pin "3"
+			(uuid "3e17bb48-cc74-49c7-b0ba-718427ec5c9")
+		)
+		(pin "4"
+			(uuid "04220a22-24bb-4a13-87a9-67e7caec5fc0")
+		)
 	)
 	(sheet_instances
 		(path "/"
