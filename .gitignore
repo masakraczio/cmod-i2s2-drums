@@ -1,0 +1,31 @@
+# Vivado generated state
+.Xil/
+*.cache/
+*.hw/
+*.ip_user_files/
+*.runs/
+*.sim/
+*.jou
+*.log
+*.str
+*.wdb
+*.pb
+*.dcp
+*.rpx
+*.rpt
+*.vdi
+*.vds
+*.wdf
+*.wpc
+dfx_runtime.txt
+
+# Keep curated release/build outputs.
+!artifacts/
+!artifacts/**
+!docs/
+!docs/**
+
+# Local scratch output
+.psram_smoke_check/
+tmp/
+temp/
