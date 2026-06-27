@@ -14,6 +14,7 @@ static constexpr int LED_PIN = LED_BUILTIN;
 
 // If you see no MIDI bytes with a transistor optocoupler, try changing this to true.
 static constexpr bool MIDI_RX_INVERTED = false;
+static constexpr bool LED_ACTIVE_LOW = true;
 
 HardwareSerial MidiSerial(1);
 
@@ -26,8 +27,16 @@ uint32_t byteCount = 0;
 uint32_t edgeCount = 0;
 int lastRxLevel = -1;
 
+void ledOn() {
+  digitalWrite(LED_PIN, LED_ACTIVE_LOW ? LOW : HIGH);
+}
+
+void ledOff() {
+  digitalWrite(LED_PIN, LED_ACTIVE_LOW ? HIGH : LOW);
+}
+
 void pulseLed() {
-  digitalWrite(LED_PIN, HIGH);
+  ledOn();
   ledOffAtMs = millis() + 70;
 }
 
@@ -98,7 +107,7 @@ void handleMidiByte(uint8_t b) {
 
 void setup() {
   pinMode(LED_PIN, OUTPUT);
-  digitalWrite(LED_PIN, LOW);
+  ledOff();
   pinMode(MIDI_RX_PIN, INPUT);
 
   Serial.begin(115200);
@@ -110,6 +119,8 @@ void setup() {
   Serial.println(MIDI_RX_PIN);
   Serial.print("LED pin: GPIO");
   Serial.println(LED_PIN);
+  Serial.print("LED active-low: ");
+  Serial.println(LED_ACTIVE_LOW ? "yes" : "no");
   Serial.print("UART RX inverted: ");
   Serial.println(MIDI_RX_INVERTED ? "yes" : "no");
   Serial.println("Play notes on the MIDI controller. Waiting for bytes...");
@@ -132,7 +143,7 @@ void loop() {
   }
 
   if (ledOffAtMs != 0 && millis() >= ledOffAtMs) {
-    digitalWrite(LED_PIN, LOW);
+    ledOff();
     ledOffAtMs = 0;
   }
 
