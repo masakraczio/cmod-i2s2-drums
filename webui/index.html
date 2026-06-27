@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CMOD A7 Drum Sampler</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #111315;
+      --panel: #1b1f23;
+      --panel-2: #23282e;
+      --line: #343b43;
+      --text: #eff3f6;
+      --muted: #9ba7b1;
+      --accent: #44c2a8;
+      --accent-2: #f06c64;
+      --accent-3: #f3c567;
+      --blue: #6aa5ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font: 14px/1.35 "Segoe UI", system-ui, sans-serif;
+    }
+
+    main {
+      width: min(1180px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 18px 0 28px;
+    }
+
+    header,
+    section {
+      border-bottom: 1px solid var(--line);
+      padding: 14px 0;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .status {
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    select,
+    input[type="number"] {
+      height: 34px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--text);
+      border-radius: 6px;
+      padding: 0 9px;
+      min-width: 92px;
+    }
+
+    button {
+      height: 34px;
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      color: var(--text);
+      border-radius: 6px;
+      padding: 0 12px;
+      cursor: pointer;
+      font-weight: 650;
+    }
+
+    button:hover { border-color: var(--muted); }
+    button:active { transform: translateY(1px); }
+    button.primary { background: #176f61; border-color: #299985; }
+    button.danger { background: #80332f; border-color: #a84c45; }
+    button.warn { background: #75581f; border-color: #9f792d; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .pads {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .pad {
+      height: 76px;
+      display: grid;
+      align-content: center;
+      gap: 4px;
+      text-align: left;
+      padding: 0 12px;
+      background: var(--panel);
+    }
+
+    .pad.active {
+      border-color: var(--accent);
+      box-shadow: inset 0 0 0 1px var(--accent);
+    }
+
+    .pad strong {
+      font-size: 15px;
+      letter-spacing: 0;
+    }
+
+    .pad span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .transport {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 86px repeat(16, minmax(26px, 1fr));
+      gap: 6px;
+      align-items: center;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .step-head,
+    .row-label {
+      height: 28px;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .row-label {
+      justify-content: end;
+      padding-right: 8px;
+      white-space: nowrap;
+    }
+
+    .cell {
+      width: 100%;
+      min-width: 26px;
+      aspect-ratio: 1;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: var(--panel);
+      padding: 0;
+    }
+
+    .cell.on { background: #23695d; border-color: var(--accent); }
+    .cell.playing { outline: 2px solid var(--blue); outline-offset: 2px; }
+    .cell.on.playing { background: #3cae98; }
+
+    .meters {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .meter {
+      height: 5px;
+      background: var(--panel);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .meter > div {
+      height: 100%;
+      width: 0%;
+      background: var(--accent-3);
+      transition: width 120ms ease-out;
+    }
+
+    footer {
+      padding-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 820px) {
+      header { grid-template-columns: 1fr; }
+      .layout { grid-template-columns: 1fr; }
+      .pads { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .pad { height: 62px; padding: 0 9px; }
+    }
+
+    @media (max-width: 560px) {
+      main { width: min(100vw - 18px, 1180px); }
+      .pads { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .toolbar, .transport { align-items: stretch; }
+      .toolbar > *, .transport > * { flex: 1 1 auto; }
+      .grid { grid-template-columns: 78px repeat(16, 28px); }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>CMOD A7 Drum Sampler</h1>
+        <div class="status" id="status">Disconnected</div>
+      </div>
+      <div class="toolbar">
+        <select id="ports"></select>
+        <button id="refresh">Refresh</button>
+        <button id="connect" class="primary">Connect</button>
+        <button id="loadBank" class="warn">Load Bank</button>
+      </div>
+    </header>
+
+    <section class="layout">
+      <div>
+        <div class="pads" id="pads"></div>
+        <div class="meters" id="meters"></div>
+      </div>
+
+      <div>
+        <div class="transport">
+          <button id="play" class="primary">Play</button>
+          <button id="stop" class="danger">Stop</button>
+          <button id="clear">Clear</button>
+          <button id="demo">Demo</button>
+          <label>BPM <input id="bpm" type="number" min="40" max="240" value="120"></label>
+        </div>
+        <div class="grid" id="grid"></div>
+      </div>
+    </section>
+
+    <footer id="footer">Keys 1-8 trigger pads. Space toggles playback.</footer>
+  </main>
+
+  <script>
+    const drums = [
+      { key: "1", name: "Kick" },
+      { key: "2", name: "Snare" },
+      { key: "3", name: "Closed HH" },
+      { key: "4", name: "Open HH" },
+      { key: "5", name: "Clap" },
+      { key: "6", name: "Low Tom" },
+      { key: "7", name: "High Tom" },
+      { key: "8", name: "Crash" }
+    ];
+
+    const state = {
+      pattern: Array.from({ length: 8 }, () => Array(16).fill(false)),
+      running: false,
+      step: 0,
+      timer: null,
+      held: new Set()
+    };
+
+    const el = (id) => document.getElementById(id);
+
+    async function api(path, body) {
+      const options = body === undefined ? {} : {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      };
+      const res = await fetch(path, options);
+      const text = await res.text();
+      let payload;
+      try { payload = text ? JSON.parse(text) : {}; } catch { payload = { ok: false, error: text }; }
+      if (!res.ok || payload.ok === false) throw new Error(payload.error || res.statusText);
+      return payload;
+    }
+
+    function setStatus(text) { el("status").textContent = text; }
+
+    async function refreshPorts() {
+      const ports = await api("/api/ports");
+      const select = el("ports");
+      const current = select.value;
+      select.replaceChildren();
+      for (const port of ports.ports) {
+        const option = document.createElement("option");
+        option.value = port;
+        option.textContent = port;
+        select.appendChild(option);
+      }
+      if (current) select.value = current;
+    }
+
+    async function refreshStatus() {
+      const st = await api("/api/status");
+      setStatus(st.connected ? `Connected: ${st.port}` : "Disconnected");
+      el("connect").textContent = st.connected ? "Disconnect" : "Connect";
+    }
+
+    async function connectToggle() {
+      const st = await api("/api/status");
+      if (st.connected) {
+        await api("/api/disconnect", {});
+      } else {
+        const port = el("ports").value;
+        if (!port) throw new Error("No serial port selected");
+        await api("/api/connect", { port, baud: 115200 });
+      }
+      await refreshStatus();
+    }
+
+    function flashPad(index) {
+      const pad = document.querySelector(`[data-pad="${index}"]`);
+      const bar = document.querySelector(`[data-meter="${index}"] > div`);
+      if (pad) {
+        pad.classList.add("active");
+        setTimeout(() => pad.classList.remove("active"), 110);
+      }
+      if (bar) {
+        bar.style.width = "100%";
+        setTimeout(() => bar.style.width = "0%", 160);
+      }
+    }
+
+    async function trigger(index) {
+      flashPad(index);
+      await api("/api/drum", { key: drums[index].key });
+    }
+
+    function savePattern() {
+      localStorage.setItem("cmodDrumPattern", JSON.stringify(state.pattern));
+      localStorage.setItem("cmodDrumBpm", el("bpm").value);
+    }
+
+    function loadPattern() {
+      try {
+        const stored = JSON.parse(localStorage.getItem("cmodDrumPattern") || "null");
+        if (stored && stored.length === 8) state.pattern = stored;
+      } catch {}
+      const bpm = localStorage.getItem("cmodDrumBpm");
+      if (bpm) el("bpm").value = bpm;
+    }
+
+    function drawPads() {
+      const pads = el("pads");
+      pads.replaceChildren();
+      drums.forEach((drum, index) => {
+        const button = document.createElement("button");
+        button.className = "pad";
+        button.dataset.pad = index;
+        button.innerHTML = `<strong>${drum.name}</strong><span>${drum.key}</span>`;
+        button.addEventListener("click", () => trigger(index).catch(reportError));
+        pads.appendChild(button);
+      });
+
+      const meters = el("meters");
+      meters.replaceChildren();
+      drums.forEach((_, index) => {
+        const meter = document.createElement("div");
+        meter.className = "meter";
+        meter.dataset.meter = index;
+        const fill = document.createElement("div");
+        meter.appendChild(fill);
+        meters.appendChild(meter);
+      });
+    }
+
+    function drawGrid() {
+      const grid = el("grid");
+      grid.replaceChildren();
+      grid.appendChild(document.createElement("div"));
+      for (let step = 0; step < 16; step++) {
+        const head = document.createElement("div");
+        head.className = "step-head";
+        head.textContent = String(step + 1);
+        grid.appendChild(head);
+      }
+
+      drums.forEach((drum, row) => {
+        const label = document.createElement("div");
+        label.className = "row-label";
+        label.textContent = drum.name;
+        grid.appendChild(label);
+
+        for (let step = 0; step < 16; step++) {
+          const cell = document.createElement("button");
+          cell.className = "cell";
+          cell.dataset.row = row;
+          cell.dataset.step = step;
+          cell.addEventListener("click", () => {
+            state.pattern[row][step] = !state.pattern[row][step];
+            renderGridState();
+            savePattern();
+          });
+          grid.appendChild(cell);
+        }
+      });
+      renderGridState();
+    }
+
+    function renderGridState() {
+      document.querySelectorAll(".cell").forEach((cell) => {
+        const row = Number(cell.dataset.row);
+        const step = Number(cell.dataset.step);
+        cell.classList.toggle("on", !!state.pattern[row][step]);
+        cell.classList.toggle("playing", state.running && step === state.step);
+      });
+    }
+
+    function stepMs() {
+      const bpm = Math.max(40, Math.min(240, Number(el("bpm").value) || 120));
+      return 60000 / bpm / 4;
+    }
+
+    function playStep() {
+      if (!state.running) return;
+      const step = state.step;
+      renderGridState();
+      drums.forEach((_, row) => {
+        if (state.pattern[row][step]) trigger(row).catch(reportError);
+      });
+      state.step = (state.step + 1) & 15;
+      state.timer = setTimeout(playStep, stepMs());
+    }
+
+    function start() {
+      if (state.running) return;
+      state.running = true;
+      state.step = 0;
+      playStep();
+    }
+
+    function stop() {
+      state.running = false;
+      if (state.timer) clearTimeout(state.timer);
+      state.timer = null;
+      renderGridState();
+    }
+
+    function clearPattern() {
+      state.pattern = Array.from({ length: 8 }, () => Array(16).fill(false));
+      savePattern();
+      renderGridState();
+    }
+
+    function demoPattern() {
+      clearPattern();
+      [0, 4, 8, 12].forEach((s) => state.pattern[0][s] = true);
+      [4, 12].forEach((s) => state.pattern[1][s] = true);
+      [0, 2, 4, 6, 8, 10, 12, 14].forEach((s) => state.pattern[2][s] = true);
+      [3, 11].forEach((s) => state.pattern[4][s] = true);
+      state.pattern[7][15] = true;
+      savePattern();
+      renderGridState();
+    }
+
+    async function loadBank() {
+      stop();
+      setStatus("Loading sample bank...");
+      const result = await api("/api/load-bank", {});
+      setStatus(`Sample bank loaded: ${result.bytes} bytes`);
+      setTimeout(refreshStatus, 900);
+    }
+
+    function reportError(err) {
+      setStatus(err.message || String(err));
+    }
+
+    function wireEvents() {
+      el("refresh").addEventListener("click", () => refreshPorts().catch(reportError));
+      el("connect").addEventListener("click", () => connectToggle().catch(reportError));
+      el("loadBank").addEventListener("click", () => loadBank().catch(reportError));
+      el("play").addEventListener("click", start);
+      el("stop").addEventListener("click", stop);
+      el("clear").addEventListener("click", clearPattern);
+      el("demo").addEventListener("click", demoPattern);
+      el("bpm").addEventListener("change", savePattern);
+
+      window.addEventListener("keydown", (event) => {
+        if (state.held.has(event.code)) return;
+        state.held.add(event.code);
+        if (/^Digit[1-8]$/.test(event.code)) {
+          trigger(Number(event.code.slice(5)) - 1).catch(reportError);
+        } else if (event.code === "Space") {
+          event.preventDefault();
+          state.running ? stop() : start();
+        }
+      });
+
+      window.addEventListener("keyup", (event) => state.held.delete(event.code));
+    }
+
+    loadPattern();
+    drawPads();
+    drawGrid();
+    wireEvents();
+    refreshPorts().then(refreshStatus).catch(reportError);
+  </script>
+</body>
+</html>
