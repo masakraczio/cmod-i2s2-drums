@@ -235,6 +235,9 @@
         <button id="refresh">Refresh</button>
         <button id="connect" class="primary">Connect</button>
         <button id="loadBank" class="warn">Load Bank</button>
+        <select id="midiInputs"></select>
+        <select id="learnPad"></select>
+        <button id="midiEnable">Enable MIDI</button>
       </div>
     </header>
 
@@ -256,19 +259,19 @@
       </div>
     </section>
 
-    <footer id="footer">Keys 1-8 trigger pads. Space toggles playback.</footer>
+    <footer id="footer">Keys 1-8 trigger pads. Space toggles playback. MIDI uses GM drum notes; Learn remaps the selected pad.</footer>
   </main>
 
   <script>
     const drums = [
-      { key: "1", name: "Kick" },
-      { key: "2", name: "Snare" },
-      { key: "3", name: "Closed HH" },
-      { key: "4", name: "Open HH" },
-      { key: "5", name: "Clap" },
-      { key: "6", name: "Low Tom" },
-      { key: "7", name: "High Tom" },
-      { key: "8", name: "Crash" }
+      { key: "1", name: "Kick", midi: 36 },
+      { key: "2", name: "Snare", midi: 38 },
+      { key: "3", name: "Closed HH", midi: 42 },
+      { key: "4", name: "Open HH", midi: 46 },
+      { key: "5", name: "Clap", midi: 39 },
+      { key: "6", name: "Low Tom", midi: 45 },
+      { key: "7", name: "High Tom", midi: 50 },
+      { key: "8", name: "Crash", midi: 49 }
     ];
 
     const state = {
@@ -276,7 +279,14 @@
       running: false,
       step: 0,
       timer: null,
-      held: new Set()
+      held: new Set(),
+      midi: {
+        access: null,
+        input: null,
+        enabled: false,
+        learnPad: null,
+        noteMap: drums.map((drum) => drum.midi)
+      }
     };
 
     const el = (id) => document.getElementById(id);
@@ -296,6 +306,11 @@
     }
 
     function setStatus(text) { el("status").textContent = text; }
+
+    function noteName(note) {
+      const names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+      return `${names[note % 12]}${Math.floor(note / 12) - 1}`;
+    }
 
     async function refreshPorts() {
       const ports = await api("/api/ports");
@@ -343,6 +358,7 @@
     }
 
     async function trigger(index) {
+      if (index < 0 || index >= drums.length) return;
       flashPad(index);
       await api("/api/drum", { key: drums[index].key });
     }
@@ -361,6 +377,37 @@
       if (bpm) el("bpm").value = bpm;
     }
 
+    function saveMidiMap() {
+      localStorage.setItem("cmodDrumMidiMap", JSON.stringify(state.midi.noteMap));
+    }
+
+    function loadMidiMap() {
+      try {
+        const stored = JSON.parse(localStorage.getItem("cmodDrumMidiMap") || "null");
+        if (Array.isArray(stored) && stored.length === drums.length && stored.every(Number.isInteger)) {
+          state.midi.noteMap = stored.map((note) => Math.max(0, Math.min(127, note)));
+        }
+      } catch {}
+    }
+
+    function updatePadMidiLabels() {
+      state.midi.noteMap.forEach((note, index) => {
+        const label = document.querySelector(`[data-midi-label="${index}"]`);
+        if (label) label.textContent = `${drums[index].key} / ${noteName(note)}`;
+      });
+    }
+
+    function drawMidiControls() {
+      const learnPad = el("learnPad");
+      learnPad.replaceChildren();
+      drums.forEach((drum, index) => {
+        const option = document.createElement("option");
+        option.value = index;
+        option.textContent = `Learn ${drum.name}`;
+        learnPad.appendChild(option);
+      });
+    }
+
     function drawPads() {
       const pads = el("pads");
       pads.replaceChildren();
@@ -368,7 +415,7 @@
         const button = document.createElement("button");
         button.className = "pad";
         button.dataset.pad = index;
-        button.innerHTML = `<strong>${drum.name}</strong><span>${drum.key}</span>`;
+        button.innerHTML = `<strong>${drum.name}</strong><span data-midi-label="${index}">${drum.key} / ${noteName(state.midi.noteMap[index])}</span>`;
         button.addEventListener("click", () => trigger(index).catch(reportError));
         pads.appendChild(button);
       });
@@ -482,6 +529,107 @@
       setTimeout(refreshStatus, 900);
     }
 
+    function midiDrumIndex(note) {
+      const mapped = state.midi.noteMap.indexOf(note);
+      if (mapped >= 0) return mapped;
+
+      const gmAliases = {
+        35: 0, 36: 0,
+        38: 1, 40: 1,
+        42: 2, 44: 2,
+        46: 3,
+        39: 4,
+        45: 5, 47: 5,
+        48: 6, 50: 6,
+        49: 7, 57: 7
+      };
+      if (Object.prototype.hasOwnProperty.call(gmAliases, note)) return gmAliases[note];
+
+      if (note >= 36 && note < 44) return note - 36;
+      return -1;
+    }
+
+    function handleMidiMessage(event) {
+      const [status, note, velocity] = event.data;
+      const command = status & 0xf0;
+      if (command !== 0x90 || velocity === 0) return;
+
+      if (state.midi.learnPad !== null) {
+        const pad = state.midi.learnPad;
+        state.midi.noteMap[pad] = note;
+        state.midi.learnPad = null;
+        saveMidiMap();
+        updatePadMidiLabels();
+        el("midiEnable").textContent = "Learn";
+        setStatus(`MIDI learned: ${drums[pad].name} = ${noteName(note)}`);
+        return;
+      }
+
+      const index = midiDrumIndex(note);
+      if (index >= 0) trigger(index).catch(reportError);
+    }
+
+    function refreshMidiInputs() {
+      const select = el("midiInputs");
+      const previous = select.value || localStorage.getItem("cmodDrumMidiInput") || "";
+      select.replaceChildren();
+
+      if (!state.midi.access) {
+        const option = document.createElement("option");
+        option.value = "";
+        option.textContent = "No MIDI";
+        select.appendChild(option);
+        return;
+      }
+
+      for (const input of state.midi.access.inputs.values()) {
+        const option = document.createElement("option");
+        option.value = input.id;
+        option.textContent = input.name || input.manufacturer || input.id;
+        select.appendChild(option);
+      }
+
+      if (previous && [...select.options].some((option) => option.value === previous)) {
+        select.value = previous;
+      }
+    }
+
+    function connectMidiInput() {
+      if (!state.midi.access) return;
+      for (const input of state.midi.access.inputs.values()) input.onmidimessage = null;
+
+      const selected = el("midiInputs").value;
+      const input = state.midi.access.inputs.get(selected) || state.midi.access.inputs.values().next().value || null;
+      state.midi.input = input;
+      if (input) {
+        input.onmidimessage = handleMidiMessage;
+        el("midiInputs").value = input.id;
+        localStorage.setItem("cmodDrumMidiInput", input.id);
+      }
+      el("midiEnable").textContent = input ? "Learn" : "Refresh MIDI";
+    }
+
+    async function enableMidi() {
+      if (!navigator.requestMIDIAccess) throw new Error("This browser does not support Web MIDI.");
+      state.midi.access = await navigator.requestMIDIAccess({ sysex: false });
+      state.midi.enabled = true;
+      state.midi.access.onstatechange = () => {
+        refreshMidiInputs();
+        connectMidiInput();
+      };
+      refreshMidiInputs();
+      connectMidiInput();
+      el("midiEnable").textContent = state.midi.input ? "Learn" : "Refresh MIDI";
+      setStatus(state.midi.input ? `MIDI: ${state.midi.input.name || state.midi.input.id}` : "No MIDI input found");
+    }
+
+    function learnMidi() {
+      if (!state.midi.input) throw new Error("No MIDI input selected.");
+      state.midi.learnPad = Number(el("learnPad").value);
+      el("midiEnable").textContent = "Play Note";
+      setStatus(`Learning MIDI for ${drums[state.midi.learnPad].name}`);
+    }
+
     function reportError(err) {
       setStatus(err.message || String(err));
     }
@@ -490,6 +638,11 @@
       el("refresh").addEventListener("click", () => refreshPorts().catch(reportError));
       el("connect").addEventListener("click", () => connectToggle().catch(reportError));
       el("loadBank").addEventListener("click", () => loadBank().catch(reportError));
+      el("midiEnable").addEventListener("click", () => {
+        if (state.midi.enabled && state.midi.input) learnMidi();
+        else enableMidi().catch(reportError);
+      });
+      el("midiInputs").addEventListener("change", connectMidiInput);
       el("play").addEventListener("click", start);
       el("stop").addEventListener("click", stop);
       el("clear").addEventListener("click", clearPattern);
@@ -511,6 +664,8 @@
     }
 
     loadPattern();
+    loadMidiMap();
+    drawMidiControls();
     drawPads();
     drawGrid();
     wireEvents();

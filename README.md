@@ -38,3 +38,20 @@ powershell -ExecutionPolicy Bypass -File .\webui\drum_webui.ps1
 ```
 
 The server opens `http://127.0.0.1:8765/`. Connect the Cmod A7 USB UART, choose the COM port, then use pads 1-8 or the 16-step sequencer. The `Load Bank` button streams `src/rtl/generated/sample_bank.hex` to the FPGA over the same serial protocol as the desktop helpers.
+
+### USB MIDI controllers
+
+USB MIDI controllers such as the Arturia MiniLab 3 should be connected to the PC, not directly to the Cmod A7. The browser UI can use Web MIDI in Chrome or Edge on `http://127.0.0.1:8765/` and forward Note On events to the FPGA over the selected UART port.
+
+Click `Enable MIDI`, allow MIDI access in the browser, then choose the MiniLab input if it is not selected automatically. The default map follows common GM drum notes:
+
+- C1 / 36 - kick
+- D1 / 38 - snare
+- F#1 / 42 - closed hihat
+- A#1 / 46 - open hihat
+- D#1 / 39 - clap
+- A1 / 45 - low tom
+- D2 / 50 - high tom
+- C#2 / 49 - crash
+
+The UI also accepts notes 36-43 as eight chromatic pads, and the `Learn` control can remap any pad to the next incoming MIDI note.
